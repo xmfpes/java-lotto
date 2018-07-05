@@ -19,6 +19,12 @@ public class LottoGameManagerTest {
     }
 
     @Test
+    public void getLottosStringTest() {
+        lottoGameManager.createLotto(Arrays.asList(1, 2, 3, 4, 5, 6));
+        assertThat(lottoGameManager.getLottosString()).isEqualTo(new Lotto(Arrays.asList(1, 2, 3, 4, 5, 6)).toString() + "\n");
+    }
+
+    @Test
     public void createWinningLottoTest() {
         assertThat(lottoGameManager.createWinningLotto("1, 2, 3, 4, 5, 6")).isEqualTo(new Lotto(Arrays.asList(1, 2, 3, 4, 5, 6)));
     }
