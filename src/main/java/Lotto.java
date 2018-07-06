@@ -15,7 +15,7 @@ public class Lotto {
         return numbers.size() == 6;
     }
     public static Lotto of(Integer... numbers) {
-        return new Lotto(Arrays.stream(numbers).map(i -> LottoNo.of(i)).collect(Collectors.toSet()));
+        return new Lotto(Arrays.stream(numbers).map(i -> LottoNo.of(i)).collect(Collectors.toCollection(TreeSet::new)));
     }
 
     public static Lotto ofRandom() {
@@ -23,15 +23,13 @@ public class Lotto {
     }
 
     public static Lotto ofString(String text) {
-        return new Lotto(Arrays.stream(text.split(", ")).map(a -> LottoNo.of(a)).collect(Collectors.toSet()));
+        return new Lotto(Arrays.stream(text.split(", ")).map(a -> LottoNo.of(a)).collect(Collectors.toCollection(TreeSet::new)));
     }
 
     public static Set<LottoNo> createLotto() {
         List<LottoNo> lists = IntStream.range(1, 46).mapToObj(i -> LottoNo.of(i)).collect(Collectors.toList());
         Collections.shuffle(lists);
-        lists = lists.subList(0, 6);
-        Collections.sort(lists);
-        return new HashSet<>(lists);
+        return new TreeSet<>(lists.subList(0, 6));
     }
 
     public LottoMatch getMatch(Lotto winningLotto) {
