@@ -20,18 +20,18 @@ public class LottoGameManagerTest {
 
     @Test
     public void getLottosStringTest() {
-        lottoGameManager.createLotto(Arrays.asList(1, 2, 3, 4, 5, 6));
-        assertThat(lottoGameManager.getLottosString()).isEqualTo(new Lotto(Arrays.asList(1, 2, 3, 4, 5, 6)).toString() + "\n");
+        lottoGameManager.createLotto(Lotto.of(1, 2, 3, 4, 5, 6));
+        assertThat(lottoGameManager.getLottosString()).isEqualTo(Lotto.of(1, 2, 3, 4, 5, 6).toString() + "\n");
     }
 
     @Test
     public void createWinningLottoTest() {
-        assertThat(lottoGameManager.createWinningLotto("1, 2, 3, 4, 5, 6")).isEqualTo(new Lotto(Arrays.asList(1, 2, 3, 4, 5, 6)));
+        assertThat(lottoGameManager.createWinningLotto("1, 2, 3, 4, 5, 6")).isEqualTo(Lotto.of(1, 2, 3, 4, 5, 6));
     }
 
     @Test
     public void createLottoResultTest() {
-        lottoGameManager.createLotto(Arrays.asList(1, 2, 3, 4, 5, 6));
+        lottoGameManager.createLotto(Lotto.of(1, 2, 3, 4, 5, 6));
         lottoGameManager.createWinningLotto("1, 2, 3, 4, 5, 6");
         assertThat(lottoGameManager.createLottoResult()).isEqualTo(new LottoResult(Arrays.asList(LottoMatch.MATCH_SIX)));
     }

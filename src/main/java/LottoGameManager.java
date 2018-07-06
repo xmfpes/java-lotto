@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,17 +12,16 @@ public class LottoGameManager {
     }
 
     public Lotto createLotto() {
-        return new Lotto();
+        return Lotto.ofRandom();
     }
 
-    public Lotto createLotto(List<Integer> lotto) {
-        Lotto newLotto = new Lotto(lotto);
-        this.lottos.add(newLotto);
-        return newLotto;
+    public Lotto createLotto(Lotto lotto) {
+        this.lottos.add(lotto);
+        return lotto;
     }
 
     public List<Lotto> createLottos(int price) {
-        for (int i = 0; i <price/LOTTO_PRICE ; i++) {
+        for (int i = 0; i < price / LOTTO_PRICE; i++) {
             lottos.add(createLotto());
         }
         return lottos;
@@ -34,14 +32,14 @@ public class LottoGameManager {
     }
 
     public Lotto createWinningLotto(String winningLottoText) {
-        winningLotto = new Lotto(Arrays.stream(winningLottoText.split(", ")).map(a -> Integer.parseInt(a)).collect(Collectors.toList()));
+        winningLotto = Lotto.ofString(winningLottoText);
         return winningLotto;
     }
 
     public LottoResult createLottoResult() {
         List<LottoMatch> lottoMatches = new ArrayList<>();
         for (Lotto lotto : lottos) {
-            lottoMatches.add(LottoMatch.getLottoMatch(lotto.getMatchCount(winningLotto)));
+            lottoMatches.add(lotto.getMatch(winningLotto));
         }
         return new LottoResult(lottoMatches);
     }

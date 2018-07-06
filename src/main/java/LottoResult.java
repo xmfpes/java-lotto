@@ -11,6 +11,18 @@ public class LottoResult {
         return (int) lottoMatches.stream().filter(m -> lottoMatch == m).count();
     }
 
+    public double getPrizeMoney() {
+        return (double) (lottoMatches.stream().map(m -> m.getPrice()).reduce((a, b) -> a + b).get());
+    }
+
+    public double getBuyMoney() {
+        return (double) (lottoMatches.size() * 1000);
+    }
+
+    public double getRate() {
+        return getPrizeMoney() / getBuyMoney() * 100;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -24,10 +36,5 @@ public class LottoResult {
     @Override
     public int hashCode() {
         return lottoMatches != null ? lottoMatches.hashCode() : 0;
-    }
-
-    public double getRate() {
-        return ((double)(lottoMatches.stream().map(m -> m.getPrice()).reduce((a, b) -> a + b).get()) /
-                (double)(lottoMatches.size() * 1000)) * 100;
     }
 }

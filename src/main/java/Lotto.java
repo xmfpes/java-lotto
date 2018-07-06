@@ -1,37 +1,46 @@
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Lotto {
-    private List<Integer> lotto;
+    private Set<LottoNo> lotto;
 
-    public Lotto() {
-        this(createLotto());
-    }
-
-    public Lotto(List<Integer> lotto) {
+    private Lotto(Set<LottoNo> lotto) {
+        if(!checkValidation(lotto)) throw new IllegalArgumentException();
         this.lotto = lotto;
     }
 
-    public List<Integer> getLotto() {
-        return lotto;
+    public static boolean checkValidation(Set numbers) {
+        return numbers.size() == 6;
+    }
+    public static Lotto of(Integer... numbers) {
+        return new Lotto(Arrays.stream(numbers).map(i -> LottoNo.of(i)).collect(Collectors.toSet()));
     }
 
-    public static List<Integer> createLotto() {
-        List<Integer> lists = IntStream.range(1, 46).boxed().collect(Collectors.toList());
+    public static Lotto ofRandom() {
+        return new Lotto(createLotto());
+    }
+
+    public static Lotto ofString(String text) {
+        return new Lotto(Arrays.stream(text.split(", ")).map(a -> LottoNo.of(a)).collect(Collectors.toSet()));
+    }
+
+    public static Set<LottoNo> createLotto() {
+        List<LottoNo> lists = IntStream.range(1, 46).mapToObj(i -> LottoNo.of(i)).collect(Collectors.toList());
         Collections.shuffle(lists);
         lists = lists.subList(0, 6);
         Collections.sort(lists);
-        return lists;
+        return new HashSet<>(lists);
     }
 
-    public int getMatchCount(Lotto winningLotto) {
-        Set<Integer> intersection = new HashSet<>(lotto);
-        intersection.retainAll(winningLotto.getLotto());
+    public LottoMatch getMatch(Lotto winningLotto) {
+        return LottoMatch.getLottoMatch(winningLotto.getIntersectionSize(lotto));
+    }
+
+    public int getIntersectionSize(Set<LottoNo> target) {
+        Set<LottoNo> intersection = new HashSet<>(lotto);
+        intersection.retainAll(target);
         return intersection.size();
     }
 
